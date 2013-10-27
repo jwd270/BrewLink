@@ -1,0 +1,127 @@
+<?xml version='1.0'?>
+<mavlink>
+	<version>3</version>
+	<enums>
+		<enum name="BREWLINK_DEVICES">
+			<description>Home brewing controller/devices.  This identifies the individual piece of equipment.  This can be a specific brand or project</description>
+			<entry value="0" name="BREWLINK_BREW_CONTROLLER_GENERIC">
+				<description>Generic Homebrew controller.</description>
+			</entry>
+			<entry value="1" name="BREWLINK_DIGITAL_THERMOMETER">
+				<description>Generic digital thermometer</description>
+				<!-- Add you specific device here (eg. "Ed's super brew controller") -->
+			</entry>
+		</enum>
+		<enum name="BREWLINK_DEVICE_TYPE">
+			<entry value="0" name="BREWLINK_REFRIGERATOR_CONTROLLER">
+				<description>Basic refrigeration controller.</description>
+			</entry>
+			<entry value="1" name="BREWLINK_HEATER_CONTROLLER">
+				<description>Basic heating element controller.</description>
+			</entry>
+			<entry value="2" name="BREWLINK_DUAL_LOOP_CONTROLLER">
+				<description>Basic dual loop temperature controller.</description>
+			</entry>
+			<entry value="3" name="BREWLINK_TEMPERATURE_SENSOR">
+				<description>Basic digital temperature sensor</description>
+			</entry>
+			<!-- Add your specific device type here. (eg. "Mash entropy controller") -->
+		</enum>
+		<enum name="BREWLINK_MODE_FLAG">
+			<description>Flags used to describe the modes of the brew controller</description>
+			<entry value="0" name="BREWLINK_MODE_DEFAULT">
+				<description>Default for devices that don't have different modes.</description>
+			</entry>
+			<entry value="1" name="BREWLINK_MODE_MANUAL">
+				<description>Indicates that device is under manual control.</description>
+			</entry>
+			<entry value="2" name="BREWLINK_MODE_AUTOMATIC">
+				<description>Indicates that device is under automatic control.</description>
+			</entry>
+			<entry value="4" name="BREWLINK_MODE_HEATING">
+				<description>Indicates that device's heater output is active</description>
+			</entry>
+			<entry value="8" name="BREWLINK_MODE_COOLING">
+				<description>Indicates that device's cooling output is active.</description>
+			</entry>
+			<entry value="16" name="BREWLINK_MODE_RUNNING">
+				<description>Indicates that device is running.  Could be used for pumps etc.</description>
+			</entry>
+			<entry value="32" name="BREWLINK_MODE_PARAMETER_OUT_OF_RANGE">
+				<description>Indicates that a critical parameter has exceeded a preset threshold.</description>
+			</entry>
+			<entry value="64" name="BREWLINK_MODE_LOW_BATTERY">
+				<description>Indicates that device has detected a low battery state.</description>
+			</entry>
+			<entry value="128" name="BREWLINK_MODE_FAULT">
+				<description>Indicates that device has entered a fault mode.</description>
+			</entry>
+		</enum>
+		<enum name="BREWLINK_TEMP_MASK">
+			<description>Bit masks for setting the temperature type values</description>
+			<entry value="3" name="BREWLINK_TEMP_UNIT_MASK">
+				<description>Mask is 0b00000011 for the temperature units value described by the BREWLINK_TEMP_UNITS enum.
+				</description>
+			</entry>
+			<entry value="12" name="BREWLINK_TEMP_SCALE_MASK">
+				<description> Mask is 0b00001100 for the temperature scale value described by the BREWLINK_TEMP_SCALE enum.
+				</description>
+			</entry>
+			<!-- Additional bits are available for future expansion -->
+		</enum>
+		<enum name="BREWLINK_TEMP_UNITS">
+			<description>Describes the temperature units used by the sensor.</description>
+			<entry value="0" name="BREWLINK_TEMP_UNITS_ADC">
+				<description>Raw ADC output</description>
+			</entry>
+			<entry value="1" name="BREWLINK_TEMP_UNITS_V">
+				<description>Sensor output in volts.</description>
+			</entry>
+			<entry value="2" name="BREWLINK_TEMP_UNITS_C">
+				<description>Temperature in degrees C</description>
+			</entry>
+			<entry value="3" name="BREWLINK_TEMP_UNITS_F">
+				<description>Temperature in degrees F</description>
+			</entry>
+		</enum>
+		<enum name="BREWLINK_VALUE_SCALE">
+			<description>Describes the scale of the reported temperature value.</description>
+			<entry value="0" name="BREWLINK_VALUE_SCALE_1">
+				<description>Unit scale factor</description>
+			</entry>
+			<entry value="1" name="BREWLINK_VALUE_SCALE_10">
+				<description>Value scaled by 1/10</description>
+			</entry>
+			<entry value="2" name="BREWLINK_VALUE_SCALE_100">
+				<description>Value scaled by 1/100</description>
+			</entry>
+			<entry value="3" name="BREWLINK_VALUE_SCALE_1000">
+				<description>Value scaled by 1/1000</description>
+			</entry>
+		</enum>
+	</enums>
+	<messages>
+		<message id="0" name="HEARBEAT">
+			<description>The heartbeat message is used to identify controllers and components on a network.  It identifies the controllers purpose and capabilities.
+			</description>
+			<field type="uint8_t" name="device">Device ID, defined in the BREWLINK_DEVICES enum</field>
+			<field type="uint8_t" name="type">Device type, defined in the BREWLINK_DEVICE_TYPE enum</field>
+			<field type="uint8_t" name="mode">Device mode flags, defined in the BREWLINK_STATUS enum </field>
+			<field type="uint8_t_mavlink_version" name="brewlink_version">Brewlink version, not writeable by the user.</field>
+		</message>
+		<message id="1" name="TEMPERATURE_READING">
+			<description>This message is used to report the temperature
+			</description>
+			<field type="int16_t" name="temp">Temperature data</field>
+			<field type="uint8_t" name="tempType">Temperature type data.  Bit masks described by BREWLINK_TEMP_MASK enum, and the data fields are described by their respective enum. </field>
+		</message>
+		<message id="2" name="BATTERY_VOLTAGE">
+			<description> This message is used to report the votage of the battery attached to the device</description>
+			<field type="int16_t" name="battVolts"> The voltage of the attached battery </field>
+			<field type="uint8_t" name="scale"> The scale of the voltage measurement as described by the BREWLINK_VALUE_SCALE enum</field>
+		</message>
+	</messages>
+</mavlink>
+  
+
+
